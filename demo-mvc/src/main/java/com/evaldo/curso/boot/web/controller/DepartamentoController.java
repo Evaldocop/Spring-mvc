@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +19,7 @@ public class DepartamentoController {
 	private DepartamentoService deparamentoService;
 
 	@GetMapping("/cadastrar")
-	public String Cadastro(Departamento departamento) {
+	public String cadastrar(Departamento departamento) {
 		return "/departamento/cadastro";
 	}
 	
@@ -34,6 +35,22 @@ public class DepartamentoController {
 		return "redirect:/departamentos/cadastrar";
 	}
 	
+	@GetMapping("/editar/{id}")
+	public String preEdita(@PathVariable("id") Long id, ModelMap model){
+		model.addAttribute("departamento",deparamentoService.buscarPorId(id));
+		return "/departamento/cadastro";
+	}
+	@PostMapping("/editar")
+	public String editar(Departamento departamento){
+		deparamentoService.editar(departamento);
+		return "redirect:/departamentos/cadastrar";
+	}
 	
+	@GetMapping("/excluir/{id}")
+	public String excluir(@PathVariable("id") Long id, ModelMap model){
+		if(!deparamentoService.departamentoTemcargos(id))
+			deparamentoService.excluir(id);
+		return listar(model);
+	}
 
 }
