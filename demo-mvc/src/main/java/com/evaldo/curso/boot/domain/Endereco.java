@@ -7,25 +7,24 @@ import javax.persistence.*;
 @Table(name = "ENDERECOS")
 public class Endereco extends AbstractEntity<Long> {
 
-	@Column( nullable = false,unique = true)
+	@Column( nullable = false)
 	private String logradouro;
 	
 
-	@Column( nullable = false,unique = true)
+	@Column( nullable = false)
 	private String bairro;
 	
 	
 
-	@Column( nullable = false,unique = true)
+	@Column( nullable = false)
 	private String cidade;
 	
 	@Column( nullable = false, length = 9)
 	private String cep;
 	
-	@Column
 	private String complemento;
 	
-	@Column
+	@Column(nullable = false, length = 5)
 	private Integer numero;
 	
 	@Column( nullable = false , length = 2)
