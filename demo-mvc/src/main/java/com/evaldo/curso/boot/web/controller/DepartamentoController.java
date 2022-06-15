@@ -16,7 +16,7 @@ import com.evaldo.curso.boot.service.DepartamentoService;
 public class DepartamentoController {
 	
 	@Autowired
-	private DepartamentoService deparamentoService;
+	private DepartamentoService departamentoService;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Departamento departamento) {
@@ -25,31 +25,31 @@ public class DepartamentoController {
 	
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("departamentos", deparamentoService.buscarTodos());
+		model.addAttribute("departamentos", departamentoService.buscarTodos());
 		return "/departamento/lista";
 	}
 	
 	@PostMapping("/salvar")
 	public String salvar(Departamento departamento){
-		deparamentoService.salvar(departamento);
+		departamentoService.salvar(departamento);
 		return "redirect:/departamentos/cadastrar";
 	}
 	
 	@GetMapping("/editar/{id}")
 	public String preEdita(@PathVariable("id") Long id, ModelMap model){
-		model.addAttribute("departamento",deparamentoService.buscarPorId(id));
+		model.addAttribute("departamento",departamentoService.buscarPorId(id));
 		return "/departamento/cadastro";
 	}
 	@PostMapping("/editar")
 	public String editar(Departamento departamento){
-		deparamentoService.editar(departamento);
+		departamentoService.editar(departamento);
 		return "redirect:/departamentos/cadastrar";
 	}
 	
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap model){
-		if(!deparamentoService.departamentoTemcargos(id))
-			deparamentoService.excluir(id);
+		if(!departamentoService.departamentoTemcargos(id))
+			departamentoService.excluir(id);
 		return listar(model);
 	}
 
