@@ -43,4 +43,13 @@ public class CargoServiceImpl implements CargoService {
 		return dao.findAll();
 	}
 
+	
+	public boolean cargoTemFuncionario(Long id) {
+		if(buscarPorId(id).getFuncionarios().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+
 }
