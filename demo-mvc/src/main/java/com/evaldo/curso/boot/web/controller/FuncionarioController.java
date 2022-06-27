@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.evaldo.curso.boot.domain.Cargo;
@@ -24,63 +25,69 @@ public class FuncionarioController {
 
 	@Autowired
 	private FuncionarioService funcionarioService;
-	
+
 	@Autowired
 	private CargoService cargoService;
-	
-	
-	
+
 	@GetMapping("/cadastrar")
 	public String Cadastro(Funcionario funcionario) {
 		return "/funcionario/cadastro";
 	}
-	
+
 	@GetMapping("/listar")
 	public String listar(ModelMap modelMap) {
 		modelMap.addAttribute("funcionarios", funcionarioService.buscarTodos());
 		return "/funcionario/lista";
 	}
-	
+
 	@PostMapping("/salvar")
-	public String salvar(Funcionario funcionario,RedirectAttributes redirectAttributes){
+	public String salvar(Funcionario funcionario, RedirectAttributes redirectAttributes) {
 		funcionarioService.salvar(funcionario);
 		redirectAttributes.addFlashAttribute("success", "Funcionario Salvo com sucesso.");
-		
+
 		return "redirect:/funcionarios/cadastrar";
 	}
+
+	@GetMapping("/editar/{id}")
+	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
+		model.addAttribute("funcionario", funcionarioService.buscarPorId(id));
+		return "/funcionario/cadastro";
+	}
+
+	@PostMapping("/editar")
+	public String editar(Funcionario funcionario, RedirectAttributes redirectAttributes) {
+		funcionarioService.editar(funcionario);
+		redirectAttributes.addFlashAttribute("success", "Funcionario editado com sucesso.");
+		return "redirect:/funcionarios/cadastrar";
+	}
+
+	@GetMapping("/excluir/{id}")
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		funcionarioService.excluir(id);
+		redirectAttributes.addFlashAttribute("success", "Funcionario excluido com sucesso.");
+		return "redirect:/funcionarios/listar";
+	}
 	
-	/*
-	 * @GetMapping("/editar/{id}") public String preEditar(@PathVariable("id") Long
-	 * id, ModelMap model){
-	 * model.addAttribute("funcionario",funcionarioService.buscarPorId(id)); return
-	 * "/funcionario/cadastro"; }
-	 * 
-	 * @PostMapping("/editar") public String editar(Funcionario funcionario,
-	 * RedirectAttributes redirectAttributes){
-	 * funcionarioService.editar(funcionario);
-	 * redirectAttributes.addFlashAttribute("success",
-	 * "Funcionario editado com sucesso."); return
-	 * "redirect:/departamentos/cadastrar"; }
-	 */
-	/*
-	 * @GetMapping("/excluir/{id}") public String excluir(@PathVariable("id") Long
-	 * id, ModelMap model){ if(funcionarioService.departamentoTemcargos(id)) {
-	 * model.addAttribute("fail",
-	 * "Departamento não pode ser excluído pois possui cargos atrelados."); } else {
-	 * departamentoService.excluir(id); model.addAttribute("success",
-	 * "Departamento excluido com sucesso."); } return listar(model); }
-	 */
 	
+	@GetMapping("/buscar/nome")
+	private String porNome(@RequestParam("nome") String nome, ModelMap model ) {
+		model.addAttribute("funcionarios", funcionarioService.buscarPorNome(nome));
+		return "/funcionario/lista";
+	}
+	@GetMapping("/buscar/cargo")
+	private String porCargo(@RequestParam("id") Long id, ModelMap model ) {
+		model.addAttribute("funcionarios", funcionarioService.buscarPorCargo(id));
+		return "/funcionario/lista";
+	}
 	@ModelAttribute("cargos")
-	public List<Cargo> getCargos(){
+	public List<Cargo> getCargos() {
 		return cargoService.buscarTodos();
 	}
-	
-    @ModelAttribute("ufs") public UF[] getUfs(){
-    	return UF.values();
-    
-	}
-	
 
+	@ModelAttribute("ufs")
+	public UF[] getUfs() {
+		return UF.values();
+
+	}
 
 }
