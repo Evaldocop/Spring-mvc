@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -22,7 +23,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @Entity
 @Table(name = "FUNCIONARIOS")
 public class Funcionario extends AbstractEntity<Long> {
-
+    @NotBlank(message = "Nome obrigatório")
 	@Column(name = "nome", nullable = false,unique = true, length = 60)
 	private String nome;
 	
