@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,6 +41,7 @@ public class Funcionario extends AbstractEntity<Long> {
 	@Column(name = "data_saida",nullable = true,columnDefinition = "DATE")
 	private LocalDate dataSaida;
 	
+	@Valid
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_endereco_fk")
 	private Endereco endereco;

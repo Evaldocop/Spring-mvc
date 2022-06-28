@@ -3,6 +3,8 @@ package com.evaldo.curso.boot.web.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -44,7 +46,7 @@ public class FuncionarioController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(Funcionario funcionario, RedirectAttributes redirectAttributes) {
+	public String salvar(@Valid Funcionario funcionario, RedirectAttributes redirectAttributes) {
 		funcionarioService.salvar(funcionario);
 		redirectAttributes.addFlashAttribute("success", "Funcionario Salvo com sucesso.");
 
@@ -58,7 +60,7 @@ public class FuncionarioController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(Funcionario funcionario, RedirectAttributes redirectAttributes) {
+	public String editar(@Valid Funcionario funcionario, RedirectAttributes redirectAttributes) {
 		funcionarioService.editar(funcionario);
 		redirectAttributes.addFlashAttribute("success", "Funcionario editado com sucesso.");
 		return "redirect:/funcionarios/cadastrar";

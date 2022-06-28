@@ -1,6 +1,7 @@
 package com.evaldo.curso.boot.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
@@ -24,6 +25,7 @@ public class Endereco extends AbstractEntity<Long> {
 	
 	private String complemento;
 	
+	@NotNull(message = "{NotNull.endereco.numero}")
 	@Column(nullable = false, length = 5)
 	private Integer numero;
 	
